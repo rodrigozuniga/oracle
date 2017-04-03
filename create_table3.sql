@@ -132,7 +132,17 @@ select dbms_random.value(1,9) from dual;
 select DBMS_RANDOM.NORMAL
 from dual;
 
-select rownum from dual connect by rownum<100;
+create table hr.sequence1b as
+select rownum as nums from dual connect by rownum<=10;
+
+create sequence sq2 start with 6 increment by 1;
+
+drop table hr.sequence2b;
+create table hr.sequence2b as
+select sq2.nextval as nums from dual connect by rownum<=10;
+
+select a.nums, b.nums
+from hr.sequence1b a full join hr.sequence2b b on a.nums=b.nums order by 1;
 
 --GROUP BY, CUBE BY, ROLLUP
 select nvl(department_id,999),nvl(job_id,'ALL'),count(*)
